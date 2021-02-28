@@ -14,13 +14,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new CustomRequestInterceptor());
+    }
+
+    @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
 
         http.antMatcher("/**").authorizeRequests()
                 .antMatchers("/health").permitAll()
-                .antMatchers("/waterNow").permitAll();
+                .antMatchers("/waterNow").permitAll()
+                .antMatchers("/getWateringData").permitAll();
     }
 
     @Override
